@@ -15,14 +15,16 @@ export class App extends React.Component {
     filter: '',
   };
 
-  handlerSubmit = data => {
-    this.setState(({ contacts }) =>
-      contacts.find(contact => contact.name === data.name)
-        ? alert(`${data.name} is already in contacts`)
-        : { contacts: [data, ...contacts] }
-    );
-  };
+   handleSubmit = data => {
+    const { contacts } = this.state;
+    const isExistContact = contacts.some(contact => contact.name.toLowerCase() === data.name.toLowerCase());
+     (isExistContact)
+       ? alert(`${data.name} is already in contacts`)
+       : this.setState(({ contacts }) => ({ contacts: [data, ...contacts] }));
 
+
+  };
+    
   onFilter = e => {
     const { value } = e.currentTarget;
     this.setState({ filter: value });
@@ -44,7 +46,7 @@ export class App extends React.Component {
     return (
       <Container>
         <Title>Phonebook</Title>
-        <ContactForm onSubmit={this.handlerSubmit} />
+        <ContactForm onSubmit={this.handleSubmit} />
 
         <Subtitle>Contacts</Subtitle>
         <Filter value={filter} onFilter={this.onFilter} />
